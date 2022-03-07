@@ -79,22 +79,24 @@ actor {
 
 //I considered using Array.sort(array, Nat.compare) but it looks like it's wanted manually.
   public func selection_sort(array : [Nat]) : async [Nat] {
+    var temp : [var Nat] = Array.thaw(array);
     var min : Nat = 0;
     var i : Nat = 0;
     var j : Nat = 0;
-    while( i < array.size() - 1)
+    while( i < temp.size() - 1)
     {
-      while(j < array.size() - 1){
-        min:=array[j];
-        if(array[j] < min){
-          min:=array[j];
+      min:=temp[j];
+      while(j < temp.size()){
+        if(temp[j] < min){
+          min:=temp[j];
+          temp[j]:=temp[i];
+          temp[i]:=min;
         };
+        j+=1;
       };
-      array[j]:=array[i];
-      array[i]:=min;
       i+=1;
       j:=i;
     };
-    return array;
+    return Array.freeze(temp);
   };
 };
